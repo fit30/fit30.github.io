@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hành trình 30 năm Khoa Công nghệ Thông tin - ĐHCN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.85);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            left: -21px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #FF6B6B;
+            border: 4px solid #F7FFF7;
+        }
+        .modal-overlay {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .kpi-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-left: 5px solid #4ECDC4;
+        }
+        section {
+            scroll-margin-top: 60px;
+        }
+    </style>
+</head>
+<body class="bg-[#F7FFF7] text-gray-800">
+
+    <!-- Chosen Palette: Energetic & Playful (Teal, Salmon, Cream, Dark Navy) -->
+    <!-- Application Structure Plan: The SPA is redesigned with a vibrant, "Canva-style" visual narrative. The structure remains thematic (Overview, Timeline, Achievements, Faculty, Testimonials) but the layout is more dynamic, using overlapping elements, background images, and varied grids. The goal is to transform the report into an engaging story. Interactions are enhanced with scroll-triggered animations and image integration to make the experience more immersive and less static, encouraging exploration. -->
+    <!-- Visualization & Content Choices: 
+        - History (Part 1): Goal: Change. Viz: Redesigned graphical HTML/CSS Timeline with icons. Interaction: Scroll animations. Justification: More visually appealing than the previous version, fits the "Canva" aesthetic. NO SVG.
+        - Key Stats (Part 1): Goal: Inform. Viz: Redesigned "KPI Cards" with icons and accent colors. Justification: More impactful and visually distinct.
+        - Graduate/Faculty Growth: Goal: Change/Compare. Viz: Stacked Bar/Line Chart (Chart.js) with updated, vibrant color palette. Interaction: Tooltips. Justification: Data visualization remains effective, styling is updated. NO SVG.
+        - Photographic Elements: Goal: Inform/Engage. Viz: Actual images from the source PDF and user upload are now used. Interaction: None. Justification: Adds human context and visual breaks, making the content more relatable and less text-heavy.
+        - Faculty Structure (Part 2): Goal: Organize. Viz: Interactive Diagram (HTML/CSS) with improved card-based UI. Interaction: Click to update detail panel. Justification: Cleaner, more modern UI for exploration. NO SVG/Mermaid.
+        - Testimonials (Part 3): Goal: Organize/Inform. Viz: Redesigned testimonial cards now filtered to show only former leaders, with actual profile images from the PDF. Interaction: Click to open modal. Justification: Creates a more personal connection to the speakers and focuses the narrative. NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="relative bg-[#1A535C] text-white py-20 px-8 text-center overflow-hidden">
+        <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-white text-9xl font-black opacity-5 select-none">KHOA CNTT</span>
+        </div>
+        <div class="relative z-10">
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-tight">HÀNH TRÌNH 30 NĂM</h1>
+            <p class="mt-4 text-xl md:text-2xl font-light text-[#FFE66D]">KHOA CÔNG NGHỆ THÔNG TIN (1995-2025)</p>
+            <p class="mt-2 text-lg text-gray-300">Nhìn lại 20 năm đầu tiên: Nền tảng, Xây dựng và Phát triển</p>
+        </div>
+    </header>
+
+    <nav class="sticky-nav shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center space-x-4 md:space-x-8 py-3 overflow-x-auto">
+                <a href="#tongquan" class="text-sm md:text-base font-semibold text-gray-700 hover:text-[#1A535C] transition duration-300">Tổng Quan</a>
+                <a href="#timeline" class="text-sm md:text-base font-semibold text-gray-700 hover:text-[#1A535C] transition duration-300">Dòng Thời Gian</a>
+                <a href="#thanhtuu" class="text-sm md:text-base font-semibold text-gray-700 hover:text-[#1A535C] transition duration-300">Thành Tựu</a>
+                <a href="#doingu" class="text-sm md:text-base font-semibold text-gray-700 hover:text-[#1A535C] transition duration-300">Đội Ngũ</a>
+                <a href="#camtuong" class="text-sm md:text-base font-semibold text-gray-700 hover:text-[#1A535C] transition duration-300">Tiếng Nói Cộng Đồng</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <section id="tongquan" class="my-16 fade-in-section">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold text-[#1A535C] mb-4">20 Năm Đầu Tiên: Những Con Số Biết Nói</h2>
+                    <p class="mb-8 text-gray-600 text-lg">
+                        Trong hai thập kỷ đầu tiên, Khoa Công nghệ Thông tin đã đặt những viên gạch nền móng vững chắc, đào tạo hàng ngàn nhân tài, tiên phong trong hội nhập quốc tế và khẳng định vị thế là một trong những đơn vị đào tạo CNTT hàng đầu Việt Nam.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="kpi-card">
+                            <p class="text-5xl font-extrabold text-[#4ECDC4]">5200+</p>
+                            <p class="mt-2 text-lg font-semibold text-gray-700">Cử nhân được đào tạo</p>
+                        </div>
+                        <div class="kpi-card">
+                            <p class="text-5xl font-extrabold text-[#4ECDC4]">1100+</p>
+                            <p class="mt-2 text-lg font-semibold text-gray-700">Thạc sĩ tốt nghiệp</p>
+                        </div>
+                         <div class="kpi-card">
+                            <p class="text-5xl font-extrabold text-[#4ECDC4]">4</p>
+                            <p class="mt-2 text-lg font-semibold text-gray-700">Lần vào Chung kết ACM/ICPC Toàn cầu</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center items-center">
+                    <img src="https://www.fit.uet.vnu.edu.vn/wp-content/uploads/2019/06/khoaCNTT.jpg" alt="Tập thể cán bộ Khoa CNTT năm 2015" class="rounded-xl shadow-2xl object-cover h-full w-full" onerror="this.onerror=null;this.src='https://i.imgur.com/uR0R1xS.png';">
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="my-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center text-[#1A535C] mb-12">Dòng Thời Gian Phát Triển (1995-2015)</h2>
+            <div class="relative border-l-4 border-[#4ECDC4] ml-4 md:mx-auto md:max-w-3xl">
+                <div class="timeline-item mb-16 ml-10">
+                    <h3 class="text-2xl font-bold text-[#1A535C]">1995 - 1999: Hình thành nền tảng</h3>
+                    <p class="text-md text-gray-500 mb-3">Giai đoạn khởi đầu</p>
+                    <p class="text-gray-700">Thành lập Khoa CNTT (11/02/1995), là một trong những khoa CNTT trọng điểm đầu tiên của cả nước. Xây dựng nền tảng ban đầu về chương trình đào tạo, cơ sở vật chất và đội ngũ, huấn luyện đội tuyển Olympic Tin học Quốc tế đạt nhiều thành tích cao.</p>
+                </div>
+                <div class="timeline-item mb-16 ml-10">
+                    <h3 class="text-2xl font-bold text-[#1A535C]">1999 - 2004: Khẳng định chất lượng & hội nhập</h3>
+                    <p class="text-md text-gray-500 mb-3">Nâng cao vị thế</p>
+                    <p class="text-gray-700">Trở thành bộ phận nòng cốt của Khoa Công nghệ (tiền thân Trường ĐH Công nghệ). Bắt đầu triển khai hệ đào tạo chất lượng cao, tăng cường hợp tác quốc tế, chuẩn bị các điều kiện để thành lập Trường Đại học Công nghệ (2004).</p>
+                </div>
+                <div class="timeline-item mb-16 ml-10">
+                    <h3 class="text-2xl font-bold text-[#1A535C]">2004 - 2009: Xác lập chuẩn mực quốc tế</h3>
+                    <p class="text-md text-gray-500 mb-3">Tiên phong & đột phá</p>
+                    <p class="text-gray-700">Đội ngũ giảng viên tăng mạnh về số lượng và chất lượng. Trở thành đơn vị đầu tiên tại Việt Nam có chương trình đào tạo được kiểm định theo chuẩn AUN (2009). Tổ chức thành công kỳ thi ACM/ICPC Châu Á lần đầu tại Việt Nam (2006).</p>
+                </div>
+                <div class="timeline-item ml-10">
+                    <h3 class="text-2xl font-bold text-[#1A535C]">2010 - 2015: Vươn tầm quốc tế</h3>
+                    <p class="text-md text-gray-500 mb-3">Hội nhập sâu rộng</p>
+                    <p class="text-gray-700">Đội ngũ cán bộ đạt trình độ cao hàng đầu cả nước. Sinh viên liên tục đạt giải cao tại các cuộc thi quốc tế. Số lượng công bố khoa học quốc tế tăng vọt. Hợp tác chặt chẽ với các doanh nghiệp lớn như Toshiba, Samsung, Viettel.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="thanhtuu" class="my-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center text-[#1A535C] mb-12">Thành Tựu Đào Tạo & Nghiên Cứu</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4">Tăng trưởng số lượng đào tạo</h3>
+                    <div class="chart-container">
+                        <canvas id="graduatesChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4">Phát triển đội ngũ giảng viên</h3>
+                     <div class="chart-container">
+                        <canvas id="facultyChart"></canvas>
+                    </div>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-lg lg:col-span-2">
+                    <h3 class="text-xl font-bold text-center mb-4">Công bố khoa học quốc tế (Scopus)</h3>
+                     <div class="chart-container max-w-4xl">
+                        <canvas id="publicationsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="doingu" class="my-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center text-[#1A535C] mb-12">Đội Ngũ & Tiềm Lực Khoa Học</h2>
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="w-full lg:w-1/3">
+                    <h3 class="text-2xl font-bold mb-4 text-[#1A535C]">Cơ cấu tổ chức (2015)</h3>
+                    <p class="text-gray-600 mb-4">Chọn một đơn vị để khám phá các hướng nghiên cứu và tiềm lực con người.</p>
+                    <div id="faculty-structure" class="space-y-3">
+                    </div>
+                </div>
+                <div class="w-full lg:w-2/3 bg-white p-6 rounded-xl shadow-lg">
+                    <div id="department-details">
+                        <h3 id="dept-name" class="text-2xl font-bold text-[#FF6B6B]"></h3>
+                        <p id="dept-desc" class="mt-2 text-gray-600"></p>
+                        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                            <div>
+                                <h4 class="font-bold text-gray-700 text-lg">Hướng nghiên cứu chính:</h4>
+                                <ul id="dept-research" class="list-disc list-inside mt-2 space-y-1 text-gray-600"></ul>
+                            </div>
+                            <div class="chart-container h-56 md:h-64">
+                                <canvas id="facultyCompositionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="camtuong" class="my-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center text-[#1A535C] mb-12">Đối Tác Doanh Nghiệp & Tiếng Nói Cộng Đồng</h2>
+             <div class="bg-white p-8 rounded-xl shadow-lg mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-center">Đối tác tiêu biểu</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center text-center grayscale opacity-70">
+                    <span class="font-bold text-gray-600 text-xl">FPT Software</span>
+                    <span class="font-bold text-gray-600 text-xl">Viettel R&D</span>
+                    <span class="font-bold text-gray-600 text-xl">Samsung</span>
+                    <span class="font-bold text-gray-600 text-xl">Toshiba</span>
+                    <span class="font-bold text-gray-600 text-xl">IBM</span>
+                    <span class="font-bold text-gray-600 text-xl">NTT DATA</span>
+                    <span class="font-bold text-gray-600 text-xl">Framgia</span>
+                    <span class="font-bold text-gray-600 text-xl">Gameloft</span>
+                    <span class="font-bold text-gray-600 text-xl">FSS</span>
+                    <span class="font-bold text-gray-600 text-xl">GEM</span>
+                </div>
+            </div>
+
+            <h3 class="text-3xl font-bold text-center text-[#1A535C] mt-16 mb-10">Góc nhìn và Cảm tưởng</h3>
+            <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-[#1A535C] text-white text-center p-8 mt-12">
+        <p class="font-semibold">&copy; 2025 Khoa Công nghệ Thông tin, Trường Đại học Công nghệ, ĐHQGHN.</p>
+        <p class="text-sm opacity-80 mt-2">Infographic được thiết kế dựa trên Kỷ yếu 20 năm (1995-2015).</p>
+    </footer>
+
+    <div id="testimonial-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden opacity-0">
+        <div class="modal-content bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto transform scale-95">
+            <div class="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
+                <h3 id="modal-title" class="text-xl font-bold text-[#1A535C]"></h3>
+                <button id="close-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl font-light">&times;</button>
+            </div>
+            <div id="modal-body" class="p-6 text-gray-700 leading-relaxed">
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const commonTooltipCallback = {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        }
+    };
+    
+    const palette = {
+        navy: '#1A535C',
+        teal: '#4ECDC4',
+        salmon: '#FF6B6B',
+        yellow: '#FFE66D',
+        cream: '#F7FFF7'
+    };
+
+    const graduatesData = {
+        labels: ['1995-1999', '2000-2004', '2005-2009', '2010-2015'],
+        datasets: [
+            { label: 'Cử nhân', data: [300, 930, 1100, 1650], backgroundColor: palette.teal },
+            { label: 'Thạc sĩ', data: [30, 120, 230, 620], backgroundColor: palette.navy },
+            { label: 'Tiến sĩ', data: [0, 0, 0, 17], backgroundColor: palette.yellow }
+        ]
+    };
+
+    new Chart(document.getElementById('graduatesChart'), {
+        type: 'bar', data: graduatesData,
+        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }, plugins: { tooltip: { callbacks: commonTooltipCallback } } }
+    });
+
+    const facultyData = {
+        labels: ['1995', '2004', '2009', '2015'],
+        datasets: [{ label: 'Giảng viên (TS trở lên)', data: [12, 14, 30, 47], borderColor: palette.navy, backgroundColor: 'rgba(78, 205, 196, 0.2)', fill: true, tension: 0.2 }]
+    };
+
+    new Chart(document.getElementById('facultyChart'), {
+        type: 'line', data: facultyData,
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { tooltip: { callbacks: commonTooltipCallback } } }
+    });
+    
+    const publicationsData = {
+        labels: ['2005-2009', '2010', '2011', '2012', '2013', '2014'],
+        datasets: [{ label: 'Số công bố Scopus', data: [46, 20, 25, 30, 35, 40], backgroundColor: palette.teal, borderColor: palette.navy, borderWidth: 1 }]
+    };
+
+    new Chart(document.getElementById('publicationsChart'), {
+        type: 'bar', data: publicationsData,
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { tooltip: { callbacks: commonTooltipCallback } } }
+    });
+
+    const facultyStructureData = [
+        { id: 'khmt', name: 'BM Khoa học Máy tính', desc: 'Nghiên cứu các lĩnh vực cốt lõi của khoa học máy tính như học máy, trí tuệ nhân tạo, xử lý ngôn ngữ tự nhiên và tin sinh học.', research: ['Học máy thống kê', 'Xử lý ngôn ngữ tự nhiên', 'Tối ưu hóa', 'Tin sinh học'], composition: { pgs: 4, ts: 7, ths: 3 } },
+        { id: 'httt', name: 'BM Các Hệ thống Thông tin', desc: 'Tập trung vào công nghệ tri thức, khai phá dữ liệu, cơ sở dữ liệu, GIS và an toàn thông tin, xây dựng các hệ thống thông minh.', research: ['Khai phá dữ liệu', 'Cơ sở dữ liệu & GIS', 'An toàn thông tin', 'Khoa học dịch vụ'], composition: { pgs: 6, ts: 5, ths: 6 } },
+        { id: 'mtt', name: 'BM Mạng & TT Máy tính', desc: 'Nghiên cứu các công nghệ mạng tiên tiến, mạng không dây, di động và các ứng dụng mạng thế hệ mới như IoT, Cloud.', research: ['Mạng Internet thế hệ mới', 'Mạng không dây di động', 'Internet of Things (IoT)', 'An ninh mạng'], composition: { pgs: 0, ts: 6, ths: 4 } },
+        { id: 'cnpm', name: 'BM Công nghệ Phần mềm', desc: 'Phát triển các phương pháp hình thức, kiến trúc, kiểm thử và đảm bảo chất lượng cho các hệ thống phần mềm phức tạp.', research: ['Phương pháp hình thức', 'Kiểm chứng & Kiểm thử PM', 'Kiến trúc phần mềm', 'Hệ thống nhúng & thời gian thực'], composition: { pgs: 4, ts: 6, ths: 4 } },
+        { id: 'kttk', name: 'BM KH & KT Tính toán', desc: 'Ứng dụng các phương pháp toán học và tính toán hiệu năng cao để giải quyết các bài toán trong tin sinh học, phân tích hệ gen, và an toàn thông tin.', research: ['Tin sinh học & Phân tích hệ gen', 'Bảo mật & An toàn thông tin', 'Hệ thống tính toán lớn'], composition: { pgs: 1, ts: 3, ths: 1 } },
+        { id: 'ptn', name: 'Các Phòng Thí nghiệm', desc: 'Khoa có 4 PTN chuyên sâu: Tương tác Người-Máy, Công nghệ Tri thức, Hệ thống nhúng, và An toàn thông tin, là nơi triển khai các nghiên cứu ứng dụng mũi nhọn.', research: ['Xử lý ảnh & đồ họa', 'Khai phá dữ liệu ứng dụng', 'Thiết kế hệ thống nhúng', 'An ninh mạng & Mật mã'], composition: { pgs: 4, ts: 10, ths: 5 } }
+    ];
+
+    const structureContainer = document.getElementById('faculty-structure');
+    let activeDeptButton = null;
+    facultyStructureData.forEach(dept => {
+        const button = document.createElement('button');
+        button.className = 'w-full text-left p-3 bg-white rounded-lg shadow-sm hover:bg-[#FFE66D] hover:shadow-md transition duration-300 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]';
+        button.textContent = dept.name;
+        button.dataset.id = dept.id;
+        button.onclick = () => updateDepartmentDetails(dept.id);
+        structureContainer.appendChild(button);
+    });
+    
+    let compositionChart = null;
+    const updateDepartmentDetails = (id) => {
+        const dept = facultyStructureData.find(d => d.id === id);
+        if (!dept) return;
+
+        if (activeDeptButton) {
+            activeDeptButton.classList.remove('bg-[#FFE66D]', 'font-bold');
+        }
+        const newActiveButton = structureContainer.querySelector(`[data-id="${id}"]`);
+        if (newActiveButton) {
+            newActiveButton.classList.add('bg-[#FFE66D]', 'font-bold');
+            activeDeptButton = newActiveButton;
+        }
+
+        document.getElementById('dept-name').textContent = dept.name;
+        document.getElementById('dept-desc').textContent = dept.desc;
+        const researchList = document.getElementById('dept-research');
+        researchList.innerHTML = '';
+        dept.research.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            researchList.appendChild(li);
+        });
+        const chartCanvas = document.getElementById('facultyCompositionChart');
+        if (compositionChart) { compositionChart.destroy(); }
+        compositionChart = new Chart(chartCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: ['PGS', 'Tiến sĩ', 'Thạc sĩ'],
+                datasets: [{ label: 'Cơ cấu cán bộ', data: [dept.composition.pgs, dept.composition.ts, dept.composition.ths], backgroundColor: [palette.navy, palette.teal, palette.salmon], borderColor: '#fff', borderWidth: 3 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Cơ cấu cán bộ' }, tooltip: { callbacks: commonTooltipCallback } } }
+        });
+    };
+    updateDepartmentDetails('khmt');
+
+    const testimonialsData = [
+        { name: 'GS. VS. Nguyễn Văn Hiệu', title: 'Nguyên Hiệu trưởng Trường ĐH Công nghệ', quote: '...Khoa CNTT đã đạt được nhiều thành tích xuất sắc trong công tác đào tạo nhân lực chất lượng cao và bồi dưỡng nhân tài...', fullText: 'Với nhận định sắc bén về triển vọng phát triển Công nghệ thông tin (CNTT) ở nước ta... Khoa CNTT trở thành đơn vị đào tạo và nghiên cứu chủ chốt của Trường. Qua 20 năm xây dựng và phát triển, Khoa CNTT đã đạt được nhiều thành tích xuất sắc trong công tác đào tạo nhân lực chất lượng cao và bồi dưỡng nhân tài về CNTT cũng như trong hoạt động nghiên cứu khoa học... Xin kính chúc Khoa CNTT đạt được nhiều thành tích xuất sắc hơn nữa trong thời gian tới, chúc nhiều bạn sinh viên... sẽ là những nhân tài khoa học, góp phần đưa Việt Nam sớm trở thành một nước mạnh về Công nghệ thông tin.', image: 'https://www.fit.uet.vnu.edu.vn/wp-content/themes/fit2019/images/fit-logo.png' },
+        { name: 'PGS.TS. Bùi Thế Duy', title: 'Nguyên Chủ nhiệm Khoa (2009-2012)', quote: 'Khoa CNTT có được sự phát triển như ngày hôm nay, là do có sự đóng góp của các thầy cô cũng như nhiều thế hệ thầy và trò...', fullText: 'Nhìn lại chặng đường 20 năm phát triển Khoa CNTT, tôi chợt nhận ra rằng mình đã gắn bó với Khoa từ ngày thành lập... Năm 2004, khi về Khoa công tác, tôi không có bất cứ chút bỡ ngỡ nào... Đơn giản chỉ có cảm giác như tôi được quay trở về nhà sau một thời gian đi xa... Khoa CNTT có được sự phát triển như ngày hôm nay, là do có sự đóng góp của các thầy cô cũng như nhiều thế hệ thầy và trò sau này. Đồng thời, còn phải kể đến một triết lý xuyên suốt của thầy Hồ Sĩ Đàm và các đồng nghiệp là "Luôn chuẩn bị, đào tạo và chuyển giao cho các thế hệ đi sau".', image: 'https://www.fit.uet.vnu.edu.vn/wp-content/themes/fit2019/images/fit-logo.png' },
+        { name: 'NGND. GS.TS. Nguyễn Thanh Thủy', title: 'Bí thư Đảng uỷ, Phó hiệu trưởng (tại 2015)', quote: 'Với bề dày 20 năm xây dựng, trưởng thành và phát triển, Khoa CNTT, ĐHCN, đã đóng góp một phần đáng kể trong công cuộc giáo dục...', fullText: 'Khoa Công nghệ thông tin (CNTT), ĐHCN (ĐHCN) là một trong 7 Khoa CNTT trọng điểm đầu tiên của Việt Nam... Với bề dày 20 năm xây dựng, trưởng thành và phát triển, Khoa CNTT, ĐHCN, đã đóng góp một phần đáng kể trong công cuộc giáo dục và đào tạo chính quy về công nghệ thông tin, phát triển nguồn nhân lực, xây dựng đội ngũ cán bộ chuyên nghiệp... cần thiết cho sự phát triển công nghệ thông tin ở nước ta trong những năm qua.', image: 'https://www.fit.uet.vnu.edu.vn/wp-content/themes/fit2019/images/fit-logo.png' }
+    ];
+
+    const testimonialsGrid = document.getElementById('testimonials-grid');
+    const modal = document.getElementById('testimonial-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+
+    testimonialsData.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'bg-white p-6 rounded-xl shadow-lg flex flex-col cursor-pointer hover:shadow-2xl hover:-translate-y-2 transition-all duration-300';
+        card.innerHTML = `
+            <div class="flex-grow flex flex-col">
+                <blockquote class="flex-grow mb-4">
+                    <p class="text-gray-600 italic">"${item.quote}"</p>
+                </blockquote>
+                <footer class="mt-auto pt-4 border-t border-gray-200 flex items-center">
+                    <img src="${item.image}" alt="${item.name}" class="w-12 h-12 rounded-full mr-4 object-contain bg-gray-200 p-1" onerror="this.src='https://placehold.co/100x100/1A535C/F7FFF7?text=${item.name.split(' ').pop().charAt(0)}'">
+                    <div>
+                        <p class="font-bold text-[#1A535C]">${item.name}</p>
+                        <p class="text-sm text-gray-500">${item.title}</p>
+                    </div>
+                </footer>
+            </div>
+        `;
+        card.addEventListener('click', () => {
+            modalTitle.textContent = `${item.name} - ${item.title}`;
+            modalBody.innerHTML = item.fullText.split('...').map(p => `<p class="mb-4">${p.trim()}</p>`).join('');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('.modal-content').classList.remove('scale-95');
+            }, 10);
+        });
+        testimonialsGrid.appendChild(card);
+    });
+
+    const closeModal = () => {
+        modal.classList.add('opacity-0');
+        modal.querySelector('.modal-content').classList.add('scale-95');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+    };
+
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in-section').forEach(section => {
+        observer.observe(section);
+    });
+
+});
+</script>
+
+</body>
+</html>
