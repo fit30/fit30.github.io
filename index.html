@@ -44,8 +44,21 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
+            background-color: #F7FFF7;
+            border: 4px solid #4ECDC4;
+            z-index: 1;
+        }
+        #moving-dot {
+            position: absolute;
+            top: 1rem;
+            left: -21px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
             background-color: #FF6B6B;
             border: 4px solid #F7FFF7;
+            transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
         }
         .modal-overlay {
             transition: opacity 0.3s ease;
@@ -65,10 +78,10 @@
         .kpi-card {
             background: #FFFFFF;
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border-left: 5px solid #4ECDC4;
+            border-bottom: 5px solid #4ECDC4;
         }
         section {
             scroll-margin-top: 60px;
@@ -80,12 +93,12 @@
     <!-- Chosen Palette: Energetic & Playful (Teal, Salmon, Cream, Dark Navy) -->
     <!-- Application Structure Plan: The SPA is redesigned with a vibrant, "Canva-style" visual narrative. The structure remains thematic (Overview, Timeline, Achievements, Faculty, Testimonials) but the layout is more dynamic, using overlapping elements, background images, and varied grids. The goal is to transform the report into an engaging story. Interactions are enhanced with scroll-triggered animations and image integration to make the experience more immersive and less static, encouraging exploration. -->
     <!-- Visualization & Content Choices: 
-        - History (Part 1): Goal: Change. Viz: Redesigned graphical HTML/CSS Timeline with icons. Interaction: Scroll animations. Justification: More visually appealing than the previous version, fits the "Canva" aesthetic. NO SVG.
-        - Key Stats (Part 1): Goal: Inform. Viz: Redesigned "KPI Cards" with icons and accent colors. Justification: More impactful and visually distinct.
+        - History (Part 1): Goal: Change. Viz: Redesigned graphical HTML/CSS Timeline with icons. Interaction: Scroll animations and hover effect for the moving dot. Justification: More visually appealing and interactive. NO SVG.
+        - Key Stats (Part 1): Goal: Inform. Viz: Redesigned "KPI Cards" in a single row for better visibility. Justification: More impactful and fits on one screen.
         - Graduate/Faculty Growth: Goal: Change/Compare. Viz: Stacked Bar/Line Chart (Chart.js) with updated, vibrant color palette. Interaction: Tooltips. Justification: Data visualization remains effective, styling is updated. NO SVG.
-        - Photographic Elements: Goal: Inform/Engage. Viz: Actual images from the source PDF and user upload are now used. Interaction: None. Justification: Adds human context and visual breaks, making the content more relatable and less text-heavy.
+        - Photographic Elements: Goal: Inform/Engage. Viz: Actual images from the source PDF and user upload are now used. Interaction: None. Justification: Adds human context and visual breaks.
         - Faculty Structure (Part 2): Goal: Organize. Viz: Interactive Diagram (HTML/CSS) with improved card-based UI. Interaction: Click to update detail panel. Justification: Cleaner, more modern UI for exploration. NO SVG/Mermaid.
-        - Testimonials (Part 3): Goal: Organize/Inform. Viz: Redesigned testimonial cards now filtered to show only former leaders, with actual profile images from the PDF. Interaction: Click to open modal. Justification: Creates a more personal connection to the speakers and focuses the narrative. NO SVG.
+        - Testimonials (Part 3): Goal: Organize/Inform. Viz: Redesigned testimonial cards now replace all avatars with styled initials. Interaction: Click to open modal. Justification: Cleaner, more uniform look that focuses on the content and author's name. NO SVG.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
@@ -115,36 +128,35 @@
     <main class="container mx-auto p-4 md:p-8">
         
         <section id="tongquan" class="my-16 fade-in-section">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-4xl font-bold text-[#1A535C] mb-4">20 Năm Đầu Tiên: Những Con Số Biết Nói</h2>
-                    <p class="mb-8 text-gray-600 text-lg">
-                        Trong hai thập kỷ đầu tiên, Khoa Công nghệ Thông tin đã đặt những viên gạch nền móng vững chắc, đào tạo hàng ngàn nhân tài, tiên phong trong hội nhập quốc tế và khẳng định vị thế là một trong những đơn vị đào tạo CNTT hàng đầu Việt Nam.
-                    </p>
-                    <div class="space-y-6">
-                        <div class="kpi-card">
-                            <p class="text-5xl font-extrabold text-[#4ECDC4]">5200+</p>
-                            <p class="mt-2 text-lg font-semibold text-gray-700">Cử nhân được đào tạo</p>
-                        </div>
-                        <div class="kpi-card">
-                            <p class="text-5xl font-extrabold text-[#4ECDC4]">1100+</p>
-                            <p class="mt-2 text-lg font-semibold text-gray-700">Thạc sĩ tốt nghiệp</p>
-                        </div>
-                         <div class="kpi-card">
-                            <p class="text-5xl font-extrabold text-[#4ECDC4]">4</p>
-                            <p class="mt-2 text-lg font-semibold text-gray-700">Lần vào Chung kết ACM/ICPC Toàn cầu</p>
-                        </div>
-                    </div>
+            <div class="text-center">
+                <h2 class="text-4xl font-bold text-[#1A535C] mb-4">20 Năm Đầu Tiên: Những Con Số Biết Nói</h2>
+                <p class="max-w-3xl mx-auto mb-10 text-gray-600 text-lg">
+                    Trong hai thập kỷ đầu tiên, Khoa Công nghệ Thông tin đã đặt những viên gạch nền móng vững chắc, đào tạo hàng ngàn nhân tài, tiên phong trong hội nhập quốc tế và khẳng định vị thế là một trong những đơn vị đào tạo CNTT hàng đầu Việt Nam.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="kpi-card">
+                    <p class="text-5xl font-extrabold text-[#4ECDC4]">5200+</p>
+                    <p class="mt-2 text-lg font-semibold text-gray-700">Cử nhân được đào tạo</p>
                 </div>
-                <div class="flex justify-center items-center">
-                    <img src="https://www.fit.uet.vnu.edu.vn/wp-content/uploads/2019/06/khoaCNTT.jpg" alt="Tập thể cán bộ Khoa CNTT năm 2015" class="rounded-xl shadow-2xl object-cover h-full w-full" onerror="this.onerror=null;this.src='https://i.imgur.com/uR0R1xS.png';">
+                <div class="kpi-card">
+                    <p class="text-5xl font-extrabold text-[#4ECDC4]">1100+</p>
+                    <p class="mt-2 text-lg font-semibold text-gray-700">Thạc sĩ tốt nghiệp</p>
                 </div>
+                 <div class="kpi-card">
+                    <p class="text-5xl font-extrabold text-[#4ECDC4]">4</p>
+                    <p class="mt-2 text-lg font-semibold text-gray-700">Lần vào Chung kết ACM/ICPC Toàn cầu</p>
+                </div>
+            </div>
+            <div class="flex justify-center items-center">
+                 <img src="https://www.fit.uet.vnu.edu.vn/wp-content/uploads/2019/06/khoaCNTT.jpg" alt="Tập thể cán bộ Khoa CNTT năm 2015" class="rounded-xl shadow-2xl object-cover max-w-4xl w-full" onerror="this.onerror=null;this.src='https://i.imgur.com/uR0R1xS.png';">
             </div>
         </section>
 
         <section id="timeline" class="my-20 fade-in-section">
             <h2 class="text-4xl font-bold text-center text-[#1A535C] mb-12">Dòng Thời Gian Phát Triển (1995-2015)</h2>
-            <div class="relative border-l-4 border-[#4ECDC4] ml-4 md:mx-auto md:max-w-3xl">
+            <div id="timeline-container" class="relative border-l-4 border-[#4ECDC4] ml-4 md:mx-auto md:max-w-3xl">
+                <div id="moving-dot"></div>
                 <div class="timeline-item mb-16 ml-10">
                     <h3 class="text-2xl font-bold text-[#1A535C]">1995 - 1999: Hình thành nền tảng</h3>
                     <p class="text-md text-gray-500 mb-3">Giai đoạn khởi đầu</p>
@@ -373,9 +385,12 @@ document.addEventListener('DOMContentLoaded', function () {
     updateDepartmentDetails('khmt');
 
     const testimonialsData = [
-        { name: 'GS. VS. Nguyễn Văn Hiệu', title: 'Nguyên Hiệu trưởng Trường ĐH Công nghệ', quote: '...Khoa CNTT đã đạt được nhiều thành tích xuất sắc trong công tác đào tạo nhân lực chất lượng cao và bồi dưỡng nhân tài...', fullText: 'Với nhận định sắc bén về triển vọng phát triển Công nghệ thông tin (CNTT) ở nước ta... Khoa CNTT trở thành đơn vị đào tạo và nghiên cứu chủ chốt của Trường. Qua 20 năm xây dựng và phát triển, Khoa CNTT đã đạt được nhiều thành tích xuất sắc trong công tác đào tạo nhân lực chất lượng cao và bồi dưỡng nhân tài về CNTT cũng như trong hoạt động nghiên cứu khoa học... Xin kính chúc Khoa CNTT đạt được nhiều thành tích xuất sắc hơn nữa trong thời gian tới, chúc nhiều bạn sinh viên... sẽ là những nhân tài khoa học, góp phần đưa Việt Nam sớm trở thành một nước mạnh về Công nghệ thông tin.', image: 'https://www.fit.uet.vnu.edu.vn/wp-content/themes/fit2019/images/fit-logo.png' },
-        { name: 'PGS.TS. Bùi Thế Duy', title: 'Nguyên Chủ nhiệm Khoa (2009-2012)', quote: 'Khoa CNTT có được sự phát triển như ngày hôm nay, là do có sự đóng góp của các thầy cô cũng như nhiều thế hệ thầy và trò...', fullText: 'Nhìn lại chặng đường 20 năm phát triển Khoa CNTT, tôi chợt nhận ra rằng mình đã gắn bó với Khoa từ ngày thành lập... Năm 2004, khi về Khoa công tác, tôi không có bất cứ chút bỡ ngỡ nào... Đơn giản chỉ có cảm giác như tôi được quay trở về nhà sau một thời gian đi xa... Khoa CNTT có được sự phát triển như ngày hôm nay, là do có sự đóng góp của các thầy cô cũng như nhiều thế hệ thầy và trò sau này. Đồng thời, còn phải kể đến một triết lý xuyên suốt của thầy Hồ Sĩ Đàm và các đồng nghiệp là "Luôn chuẩn bị, đào tạo và chuyển giao cho các thế hệ đi sau".', image: 'https://www.fit.uet.vnu.edu.vn/wp-content/themes/fit2019/images/fit-logo.png' },
-        { name: 'NGND. GS.TS. Nguyễn Thanh Thủy', title: 'Bí thư Đảng uỷ, Phó hiệu trưởng (tại 2015)', quote: 'Với bề dày 20 năm xây dựng, trưởng thành và phát triển, Khoa CNTT, ĐHCN, đã đóng góp một phần đáng kể trong công cuộc giáo dục...', fullText: 'Khoa Công nghệ thông tin (CNTT), ĐHCN (ĐHCN) là một trong 7 Khoa CNTT trọng điểm đầu tiên của Việt Nam... Với bề dày 20 năm xây dựng, trưởng thành và phát triển, Khoa CNTT, ĐHCN, đã đóng góp một phần đáng kể trong công cuộc giáo dục và đào tạo chính quy về công nghệ thông tin, phát triển nguồn nhân lực, xây dựng đội ngũ cán bộ chuyên nghiệp... cần thiết cho sự phát triển công nghệ thông tin ở nước ta trong những năm qua.', image: 'https://www.fit.uet.vnu.edu.vn/wp-content/themes/fit2019/images/fit-logo.png' }
+        { name: 'GS. VS. Nguyễn Văn Hiệu', title: 'Nguyên Hiệu trưởng Trường ĐH Công nghệ', quote: '...Khoa CNTT đã đạt được nhiều thành tích xuất sắc trong công tác đào tạo nhân lực chất lượng cao và bồi dưỡng nhân tài...', fullText: 'Với nhận định sắc bén về triển vọng phát triển Công nghệ thông tin (CNTT) ở nước ta... Khoa CNTT trở thành đơn vị đào tạo và nghiên cứu chủ chốt của Trường. Qua 20 năm xây dựng và phát triển, Khoa CNTT đã đạt được nhiều thành tích xuất sắc trong công tác đào tạo nhân lực chất lượng cao và bồi dưỡng nhân tài về CNTT cũng như trong hoạt động nghiên cứu khoa học... Xin kính chúc Khoa CNTT đạt được nhiều thành tích xuất sắc hơn nữa trong thời gian tới.' },
+        { name: 'PGS.TS. Bùi Thế Duy', title: 'Nguyên Chủ nhiệm Khoa (2009-2012)', quote: 'Khoa CNTT có được sự phát triển như ngày hôm nay, là do có sự đóng góp của các thầy cô cũng như nhiều thế hệ thầy và trò...', fullText: 'Nhìn lại chặng đường 20 năm phát triển Khoa CNTT, tôi chợt nhận ra rằng mình đã gắn bó với Khoa từ ngày thành lập... Năm 2004, khi về Khoa công tác, tôi không có bất cứ chút bỡ ngỡ nào... Đơn giản chỉ có cảm giác như tôi được quay trở về nhà sau một thời gian đi xa... Khoa CNTT có được sự phát triển như ngày hôm nay, là do có sự đóng góp của các thầy cô cũng như nhiều thế hệ thầy và trò sau này.' },
+        { name: 'NGND. GS.TS. Nguyễn Thanh Thủy', title: 'Bí thư Đảng uỷ, Phó hiệu trưởng (tại 2015)', quote: 'Với bề dày 20 năm xây dựng, trưởng thành và phát triển, Khoa CNTT, ĐHCN, đã đóng góp một phần đáng kể trong công cuộc giáo dục...', fullText: 'Khoa Công nghệ thông tin (CNTT), ĐHCN (ĐHCN) là một trong 7 Khoa CNTT trọng điểm đầu tiên của Việt Nam... Với bề dày 20 năm xây dựng, trưởng thành và phát triển, Khoa CNTT, ĐHCN, đã đóng góp một phần đáng kể trong công cuộc giáo dục và đào tạo chính quy về công nghệ thông tin, phát triển nguồn nhân lực, xây dựng đội ngũ cán bộ chuyên nghiệp... cần thiết cho sự phát triển công nghệ thông tin ở nước ta trong những năm qua.' },
+        { name: 'NGND. GVCC. Hồ Sĩ Đàm', title: 'Chủ nhiệm Khoa đầu tiên', quote: 'Lịch sử phôi thai hình thành Khoa CNTT có một mốc son - đó là ngày ra đời chuyên ngành Máy tính mang tính tiên phong...', fullText: '...lịch sử phôi thai hình thành Khoa CNTT có một mốc son - đó là ngày ra đời chuyên ngành Máy tính mang tính tiên phong bền vững thật đáng tự hào, trân trọng để lưu truyền cho nhiều thế hệ bây giờ và mai sau... Hai sự kiện ra đời gắn liền với hai thuật ngữ Máy tính và Tin học là những dấu mốc quan trọng trên chặng đường phôi thai hình thành và phát triển Khoa CNTT. Những mốc thời gian mở đầu đậm nét tiên phong mang tính lịch sử ấy cần được trân trọng, tôn vinh và xứng đáng được chọn là Năm truyền thống Khoa CNTT của chúng ta.' },
+        { name: 'GS. Nguyễn Hữu Đức', title: 'Nguyên Hiệu trưởng (2005-2009)', quote: '...triết lý xây dựng và phát triển Trường dựa trên nền tảng khoa học cơ bản và CNTT có sức thuyết phục rất cao.', fullText: 'Vào những năm 2000, trong khi đất nước đã có một số cơ sở đào tạo truyền thống về kỹ thuật và công nghệ, để thành lập thêm một Trường Đại học Công nghệ thuộc Đại học Quốc gia Hà Nội phải có những chuẩn bị, trao đổi và thuyết phục rất công phu và trí tuệ, trong đó triết lý xây dựng và phát triển Trường dựa trên nền tảng khoa học cơ bản và CNTT có sức thuyết phục rất cao... IT bao gồm I & T. I là thông tin (Information), là tri thức và kinh nghiệm. T là công nghệ nhưng cũng có thể gán ghép theo nghĩa thời gian, thời điểm (Time). Hai mươi năm tích lũy và bây giờ chính là thời điểm T cất cánh của IT - UET - VNU, cất cánh của Khoa Công nghệ thông tin thân yêu.' },
+        { name: 'PGS.TS. Nguyễn Ngọc Bình', title: 'Nguyên Hiệu trưởng', quote: 'Khoa CNTT cũng tiên phong trong đào tạo theo các chương trình quốc tế, chất lượng cao...', fullText: 'Chúc mừng Khoa Công nghệ thông tin (CNTT), Trường Đại học Công nghệ (ĐHCN), Đại học Quốc gia Hà Nội (ĐHQGHN) kỷ niệm 20 năm thành lập (1995 – 2015)!... Khoa CNTT cũng tiên phong trong đào tạo theo các chương trình quốc tế, chất lượng cao như các chương trình theo Nhiệm vụ chiến lược ở cả 3 bậc đào tạo, được tổ chức bài bản và hiệu quả... Chúc mừng những thành công qua 20 năm phát triển của các thế hệ thầy và trò Khoa CNTT!' }
     ];
 
     const testimonialsGrid = document.getElementById('testimonials-grid');
@@ -383,6 +398,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalTitle = document.getElementById('modal-title');
     const modalBody = document.getElementById('modal-body');
     const closeModalBtn = document.getElementById('close-modal-btn');
+
+    const getInitials = (name) => {
+        return name.split(' ')
+                   .filter(word => !word.includes('.'))
+                   .map(word => word.charAt(0))
+                   .join('')
+                   .toUpperCase();
+    };
 
     testimonialsData.forEach(item => {
         const card = document.createElement('div');
@@ -393,7 +416,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p class="text-gray-600 italic">"${item.quote}"</p>
                 </blockquote>
                 <footer class="mt-auto pt-4 border-t border-gray-200 flex items-center">
-                    <img src="${item.image}" alt="${item.name}" class="w-12 h-12 rounded-full mr-4 object-contain bg-gray-200 p-1" onerror="this.src='https://placehold.co/100x100/1A535C/F7FFF7?text=${item.name.split(' ').pop().charAt(0)}'">
+                    <div class="w-12 h-12 rounded-full mr-4 bg-[#1A535C] flex items-center justify-center text-white font-bold text-xl">
+                        <span>${getInitials(item.name)}</span>
+                    </div>
                     <div>
                         <p class="font-bold text-[#1A535C]">${item.name}</p>
                         <p class="text-sm text-gray-500">${item.title}</p>
@@ -432,6 +457,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelectorAll('.fade-in-section').forEach(section => {
         observer.observe(section);
+    });
+    
+    const timelineContainer = document.getElementById('timeline-container');
+    const movingDot = document.getElementById('moving-dot');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+
+    timelineItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            const topPosition = item.offsetTop;
+            movingDot.style.top = `${topPosition}px`;
+        });
     });
 
 });
